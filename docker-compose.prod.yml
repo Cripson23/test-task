@@ -1,0 +1,55 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    volumes:
+      - ./back:/var/www
+      - ./docker/nginx/default-prod.conf:/etc/nginx/conf.d/default-prod.conf
+      - ./docker/nginx/logs:/var/log/nginx
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - php-fpm
+      - react-app
+    networks:
+      - app-network
+  php-fpm:
+    build:
+      context: ./back
+      dockerfile: Dockerfile.prod
+    volumes:
+      - ./back:/var/www
+      - /var/www/vendor
+      - ./back/php-fpm/logs:/var/log/php-fpm
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - app-network
+  react-app:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.prod
+    networks:
+      - app-network
+volumes:
+  mysqldata:
+
+networks:
+  app-network:
+    driver: bridge

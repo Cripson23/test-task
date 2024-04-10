@@ -1,0 +1,18 @@
+# Устанавливаем базовый образ Node.js последней версии
+FROM node:latest
+
+# Устанавливаем рабочую директорию в контейнере
+WORKDIR /app
+
+# Копируем файлы проекта
+COPY package*.json ./
+
+# Устанавливаем зависимости
+RUN npm install -g npm@10.5.1 && npm install --legacy-peer-deps
+
+# Копируем оставшиеся файлы проекта
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]

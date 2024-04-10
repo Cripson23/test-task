@@ -1,0 +1,55 @@
+# Using PHP 8.1 as base image
+FROM php:8.1-fpm
+
+# Install common packages
+RUN apt-get update && apt-get install -y curl cron \
+    && docker-php-ext-install -j$(nproc) mysqli pdo pdo_mysql \
+    && mkdir -p /var/log/php-fpm
+
+# Copy php-fpm config
+COPY php-fpm/custom-php-fpm-dev.conf /usr/local/etc/php-fpm.conf
+
+# Install Composer globally
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Setup work directory
+WORKDIR /var/www
+
+# Copy project files to container and set owner
+COPY . /var/www
+RUN chown -R www-data:www-data /var/www
+
+# Install project dependencies as www-data
+USER www-data
+
+RUN composer install --no-interaction
+
+USER root
+
+# Configure xdebug only if in dev environment
+RUN pecl install xdebug && docker-php-ext-enable xdebug \
+        && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+        && echo "xdebug.start_with_request=trigger" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+        && echo "xdebug.client_host=172.18.0.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+        && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+        && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+        && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+        && touch /var/log/xdebug.log \
+        && chown www-data:www-data /var/log/xdebug.log \
+        && chmod 664 /var/log/xdebug.log
+
+# Set proper permissions based on environment
+RUN find /var/www -type d -exec chmod 775 {} \; \
+        && find /var/www -type f -exec chmod 664 {} \; \
+        && chmod -R 775 /var/log
+
+# Expose port 9000
+EXPOSE 9000
+
+# Копируем скрипт запуска
+COPY start.sh /start.sh
+# Делаем скрипт исполняемым
+RUN chmod +x /start.sh
+
+# Запускаем скрипт при старте контейнера
+ENTRYPOINT ["/start.sh"]

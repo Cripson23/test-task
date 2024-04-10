@@ -1,0 +1,20 @@
+# Устанавливаем базовый образ Node.js последней версии
+FROM node:latest as builder
+
+# Устанавливаем рабочую директорию в контейнере
+WORKDIR /app
+
+# Копируем файлы проекта
+COPY package*.json ./
+
+# Устанавливаем зависимости
+RUN npm install -g npm@10.5.1 && npm install --legacy-peer-deps
+
+# Копируем оставшиеся файлы проекта
+COPY . .
+
+# Собираем приложение
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
