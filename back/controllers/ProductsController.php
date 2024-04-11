@@ -17,7 +17,7 @@ class ProductsController extends BaseController
     protected function verbs(): array
     {
         return [
-            'index' => ['POST'],
+            'index' => ['POST', 'OPTIONS'],
         ];
     }
 

@@ -2,7 +2,7 @@
 FROM php:8.1-fpm
 
 # Install common packages
-RUN apt-get update && apt-get install -y curl cron \
+RUN apt-get update && apt-get install -y curl cron unzip zip git \
     && docker-php-ext-install -j$(nproc) mysqli pdo pdo_mysql \
     && mkdir -p /var/log/php-fpm
 

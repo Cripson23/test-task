@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\filters\Cors;
 use yii\rest\Controller;
 
 
@@ -21,9 +22,24 @@ class BaseController extends Controller
         422 => "Unprocessable Entity",
     ];
 
+	/**
+	 * @return array
+	 */
     public function behaviors(): array
     {
         $behaviors = parent::behaviors();
+
+		$behaviors['corsFilter'] = [
+			'class' => \yii\filters\Cors::class,
+			'cors' => [
+				'Origin' => [Yii::$app->params['frontUrl']],
+				'Access-Control-Request-Method' => ['*'],
+				'Access-Control-Request-Headers' => ['*'],
+				'Access-Control-Allow-Credentials' => true,
+				'Access-Control-Max-Age' => 3600,
+			],
+		];
+
         $behaviors['contentNegotiator'] = [
             'class' => \yii\filters\ContentNegotiator::class,
             'formats' => [

@@ -34,7 +34,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3306:3306"
+      - "3366:3306"
     volumes:
       - mysqldata:/var/lib/mysql
       - ./docker/mysql/conf.d:/etc/mysql/conf.d

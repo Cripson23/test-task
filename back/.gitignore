@@ -39,4 +39,3 @@ tests/_support/_generated
 .bash_history
 .bowerrc
 .selected_editor
-*.sql
