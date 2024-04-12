@@ -1,11 +1,15 @@
-import './App.css';
-import ProductList from "./components/ProductList";
+import { ThemeProvider } from 'styled-components';
+import {theme} from "./styles/theme";
+import GlobalStyle from "./styles/GlobalStyle";
+
+import ProductList from "./components/ProductList/ProductList";
 
 function App() {
   return (
-    <div className="App">
-      <ProductList />
-    </div>
+    <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <ProductList />
+    </ThemeProvider>
   );
 }
 

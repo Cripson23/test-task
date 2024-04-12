@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
-import ProductCard from "./ProductCard";
-import { Product } from "../types/Product";
+
+import { List } from "./ProductList.styles";
+import { Product } from "../../types/Product";
+import ProductCard from "./../ProductCard/ProductCard";
 
 interface ApiResponse {
     data: Product[];
 }
-
-const List = styled.div` 
-    /* Стили списка */
-`
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
