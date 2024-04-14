@@ -44,7 +44,7 @@ class DatabaseSyncCronService extends Model
 
             // Обновление списка задач cron
             $cronContents = implode(PHP_EOL, $cronJobs) . PHP_EOL;
-            exec('echo "' . $cronContents . '" | crontab -', $output, $returnVar);
+            exec('echo "' . $cronContents . '" | crontab -u root -', $output, $returnVar);
 
             if ($result = $returnVar === 0) {
                 Logger::echoLog("Задача на синхронизацию баз успешно добавлена в Cron.\n");
@@ -82,7 +82,7 @@ class DatabaseSyncCronService extends Model
             if ($removedJobsCount > 0) {
                 // Обновление списка задач cron
                 $cronContents = implode(PHP_EOL, $cronJobs);
-                exec('echo "' . $cronContents . '" | crontab -', $output, $returnVar);
+                exec('echo "' . $cronContents . '" | crontab -u root -', $output, $returnVar);
 
                 if ($result = $returnVar === 0) {
                     Logger::echoLog("{$removedJobsCount} задач на синхронизацию баз данных успешно очищено в Cron.\n");

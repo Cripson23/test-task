@@ -5,6 +5,8 @@ export interface Product {
     description: string;
     price: number;
     image_path: string;
-    isSale?: boolean;
-    isSoldOut?: boolean;
+    isOrdering: boolean;
+    isOrdered: boolean;
+    isSale: boolean;
+    isSoldOut: boolean;
 }

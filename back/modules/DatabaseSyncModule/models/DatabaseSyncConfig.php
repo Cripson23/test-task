@@ -11,7 +11,7 @@ class DatabaseSyncConfig extends Model
     const SCENARIO_SYNC = 'scenario-sync';
     const SCENARIO_CRON = 'scenario-cron';
 
-    const MIN_BATCH_SIZE = 25;
+    const MIN_BATCH_SIZE = 5;
     const MAX_BATCH_SIZE = 10000;
 
     // типы не указаны, дабы валидация работала в полной мере

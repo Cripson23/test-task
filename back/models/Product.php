@@ -10,7 +10,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property int $id
  * @property string $title
- * @property string $sub_title
+ * @property string $subtitle
  * @property float $price
  * @property string $description
  * @property string $image_path
@@ -44,10 +44,10 @@ class Product extends \yii\db\ActiveRecord
     public function rules(): array
     {
         return [
-            //[['title', 'sub_title', 'price', 'description', 'image_path'], 'required'],
+            //[['title', 'subtitle', 'price', 'description', 'image_path'], 'required'],
             [['price'], 'number', 'on' => self::SCENARIO_LIST],
             //[['description'], 'string'],
-            [['title', 'sub_title'], 'string', 'max' => 64, 'on' => self::SCENARIO_LIST],
+            [['title', 'subtitle'], 'string', 'max' => 64, 'on' => self::SCENARIO_LIST],
             [['image_path'], 'string', 'max' => 128, 'on' => self::SCENARIO_LIST],
         ];
     }
@@ -60,7 +60,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Заголовок',
-            'sub_title' => 'Подзаголовок',
+            'subtitle' => 'Подзаголовок',
             'price' => 'Стоимость',
             'description' => 'Описание',
             'image_path' => 'Путь до изображения',

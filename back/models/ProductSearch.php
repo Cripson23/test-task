@@ -29,7 +29,7 @@ class ProductSearch extends Product
         $sortAttributes = [
             'id',
             'title',
-            'sub_title',
+            'subtitle',
             'price',
         ];
 
@@ -79,7 +79,7 @@ class ProductSearch extends Product
         foreach ($filters as $attribute => $value) {
             // Проверяем, что атрибут существует в модели
             if ($this->hasAttribute($attribute)) {
-                if (in_array($attribute, ['title', 'sub_title', 'price'])) {
+                if (in_array($attribute, ['title', 'subtitle', 'price'])) {
                     $query->andFilterWhere(['like', $attribute, $value]);
                 } else {
                     $query->andWhere([$attribute => $value]);
