@@ -14,6 +14,7 @@
         - ```sudo chown -R www-data:www-data .```
         - ```sudo chmod 775 -R .```
     - В продуктовой среде:
+        - ```sudo chown -R www-data:www-data .```
         - ```sudo find . -type d -exec chmod 750 {} \; && sudo find . -type f -exec chmod 640 {} \;```
 - Скопировать файл виртуального окружения в зависимости от окружения (**.env.dev** / **.env.prod**) из корневой директории, назвав его **.env**.
 - Продублировать получившийся файл **.env** в **./back**.
