@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../actions/loadingActions';
-import {finishOrder, removeProduct, setProducts, startOrder} from "../../actions/productActions";
+import { finishOrder, removeProduct, setProducts, startOrder } from "../../actions/productActions";
 import { setOrdering } from "../../actions/orderActions";
 
 import StyledSpinner from '../../styles/components/StyledSpinner';
@@ -50,6 +50,9 @@ const ProductList: React.FC = () => {
         axios.post<ApiResponse>(process.env.REACT_APP_API_ENDPOINT + '/products', {})
             .then(response => {
                 const timer = setTimeout(() => {  // Добавляем задержку для имитации загрузки
+                    if (response.data.data.length === 0) {
+                        setPopup(prev => ({ ...prev, show: true, type: 'message', message: 'Товары отсутствуют' }));
+                    }
                     dispatch(setProducts(response.data.data));
                     dispatch(setLoading(false));
                 }, 2000);
