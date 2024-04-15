@@ -16,6 +16,13 @@
 - Продублировать получившийся файл **.env** в **./back**.
 - Скопировать файл виртуального окружения в зависимости от окружения (**.env.dev** / **.env.prod**) из **./front**, назвав его **.env** и сохранив в той же директории.
 - Убедиться что на хост-машине не заняты порты **3366, 3399, 80** каким-либо из сервисов (**apache2 / nginx / mysql**).
+- Для **prod** окружения поместить файлы ssl сертификатов в директорию **./docker/nginx/ssl**:
+  - **back**: 
+    - certificate_back.crt
+    - private_back.key
+  - **front**: 
+    - certificate_front.crt
+    - private_front.key
 - Запустить сборку и запуск частей приложения в зависимости от окружения:
   - ```docker-compose -f docker-compose.dev.yml up --build -d``` **(dev)**.
   - ```docker-compose -f docker-compose.prod.yml up --build -d``` **(prod)**.
