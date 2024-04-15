@@ -27,19 +27,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onOrder }) => {
     const isGlobalOrdering = useSelector((state: RootState) => state.order.isOrdering);
 
     return (
-        <Card isSale={productDetails.isSale}>
+        <Card $isSale={productDetails.isSale}>
             <ProductImage src={process.env.REACT_APP_API_ENDPOINT + product.image_path} alt={product.title} />
             <ProductTitle>{product.title}</ProductTitle>
             <ProductSubtitle>{product.subtitle}</ProductSubtitle>
             <ProductDescription>{product.description}</ProductDescription>
-            <ProductPrice isSale={productDetails.isSale}>{product.price} $</ProductPrice>
+            <ProductPrice $isSale={productDetails.isSale}>{product.price} $</ProductPrice>
             {productDetails.isSale && <SaleLabel>Товар по акции</SaleLabel>}
             <OrderButton
                 onClick={() => onOrder(product.id)}
                 disabled={productDetails.isOrdering || productDetails.isOrdered}
-                isOrdering={productDetails.isOrdering}
-                isOrdered={productDetails.isOrdered}
-                isGlobalOrdering={isGlobalOrdering}
+                $isOrdering={productDetails.isOrdering}
+                $isOrdered={productDetails.isOrdered}
+                $isGlobalOrdering={isGlobalOrdering}
             >
                 {productDetails.isOrdering ? (
                     <StyledSmallSpinner /> // Показываем спиннер

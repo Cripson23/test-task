@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { RootState } from "../../store";
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +33,8 @@ const ProductList: React.FC = () => {
         show: false,
         type: 'message',
         message: '',
-        onClose: () => {}  // Temporary placeholder
+        onClose: () => {},
+        autoCloseTimeout: undefined
     });
 
     const closePopup = useCallback(() => {
@@ -48,10 +49,11 @@ const ProductList: React.FC = () => {
         dispatch(setLoading(true));
         axios.post<ApiResponse>(process.env.REACT_APP_API_ENDPOINT + '/products', {})
             .then(response => {
-                setTimeout(() => {  // Добавляем задержку для имитации загрузки
+                const timer = setTimeout(() => {  // Добавляем задержку для имитации загрузки
                     dispatch(setProducts(response.data.data));
                     dispatch(setLoading(false));
                 }, 2000);
+                return () => clearTimeout(timer);
             })
             .catch(error => {
                 setPopup(prev => ({ ...prev, show: true, type: 'error', message: 'Ошибка при загрузке товаров' }));
@@ -67,7 +69,8 @@ const ProductList: React.FC = () => {
                     ...prev,
                     show: true,
                     type: 'error',
-                    message: 'Сожалеем, но данный товар закончился'
+                    message: 'Сожалеем, но данный товар закончился',
+                    autoCloseTimeout: 5000
                 }));
 
                 return dispatch(removeProduct(product.id));
@@ -78,7 +81,8 @@ const ProductList: React.FC = () => {
                     ...prev,
                     show: true,
                     type: 'message',
-                    message: 'Поздравляем, на этот заказ распространяется скидка!'
+                    message: 'Поздравляем, на этот заказ распространяется скидка!',
+                    autoCloseTimeout: 5000
                 }));
             }
 
@@ -86,25 +90,35 @@ const ProductList: React.FC = () => {
             dispatch(setOrdering(true));
 
             // Имитируем запрос к серверу
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 dispatch(finishOrder(product.id));
                 dispatch(setOrdering(false));
             }, 2000);
+            return () => clearTimeout(timer);
         }
     };
 
     return (
         <List>
             {popup.show && (
-                <Popup message={popup.message} type={popup.type} onClose={popup.onClose} />
+                <Popup
+                    message={popup.message}
+                    type={popup.type}
+                    onClose={popup.onClose}
+                    autoCloseTimeout={popup.autoCloseTimeout}
+                />
             )}
 
-            <AnimatedOverlay show={isLoading}>
+            <AnimatedOverlay $show={isLoading}>
                 <StyledSpinner />
             </AnimatedOverlay>
 
             { products.map((product: Product) => (
-                <ProductCard key={product.id} product={product} onOrder={() => handleOrder(isGlobalOrdering, product)} />
+                <ProductCard
+                    key={product.id}
+                    product={product}
+                    onOrder={() => handleOrder(isGlobalOrdering, product)
+                } />
             )) }
         </List>
     );

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface AnimatedOverlayProps {
-    show: boolean;
+    $show: boolean;
 }
 
 const Overlay = styled.div.attrs<AnimatedOverlayProps>(() => ({
@@ -23,7 +23,7 @@ const Overlay = styled.div.attrs<AnimatedOverlayProps>(() => ({
 `;
 
 const AnimatedOverlay = styled(Overlay)<AnimatedOverlayProps>`
-    ${({ show }) => show && css`
+    ${({ $show }) => $show && css`
         opacity: 1;
         visibility: visible;
     `}

@@ -1,17 +1,17 @@
 import styled, { css } from 'styled-components';
 
 interface CardProps {
-    isSale: boolean;
+    $isSale: boolean;
 }
 
 interface ProductPriceProps {
-    isSale: boolean;
+    $isSale: boolean;
 }
 
 interface OrderButtonProps {
-    isOrdering: boolean;
-    isOrdered: boolean;
-    isGlobalOrdering: boolean;
+    $isOrdering: boolean;
+    $isOrdered: boolean;
+    $isGlobalOrdering: boolean;
 }
 
 export const Card = styled.div<CardProps>`
@@ -26,7 +26,7 @@ export const Card = styled.div<CardProps>`
     align-items: center;
     background-color: ${props => props.theme.colors.light};
 
-    ${props => props.isSale && css`
+    ${props => props.$isSale && css`
         border-color: ${props => props.theme.colors.success};
         border-width: 3px;
     `};
@@ -41,6 +41,7 @@ export const ProductImage = styled.img`
 
 export const ProductTitle = styled.h2`
     color: ${props => props.theme.colors.dark};
+    text-align: center;
     margin: 10px 0;
 
     @media (max-width: 599px) { /* Мобильные устройства */
@@ -53,6 +54,7 @@ export const ProductTitle = styled.h2`
 
 export const ProductSubtitle = styled.h3`
     color: ${props => props.theme.colors.dark};
+    text-align: center;
     margin: 0 0 5px;
 
     @media (max-width: 599px) { /* Мобильные устройства */
@@ -76,7 +78,7 @@ export const ProductDescription = styled.p`
 `;
 
 export const ProductPrice = styled.p<ProductPriceProps>`
-    color: ${props => props.isSale ? props.theme.colors.success : props.theme.colors.secondary};
+    color: ${props => props.$isSale ? props.theme.colors.success : props.theme.colors.secondary};
     text-align: center;
 
     @media (max-width: 599px) { /* Мобильные устройства */
@@ -101,9 +103,9 @@ export const SaleLabel = styled.span`
 `;
 
 export const OrderButton = styled.button<OrderButtonProps>`
-    background-color: ${props => props.isOrdered
+    background-color: ${props => props.$isOrdered
             ? props.theme.colors.dark 
-            : (props.isGlobalOrdering ? props.theme.colors.secondary : props.theme.colors.primary.light)};
+            : (props.$isGlobalOrdering ? props.theme.colors.secondary : props.theme.colors.primary.light)};
     color: ${props => props.theme.colors.light};
     border: none;
     border-radius: 5px;
@@ -111,8 +113,8 @@ export const OrderButton = styled.button<OrderButtonProps>`
     margin-top: 15px;
     transition: background-color 0.2s;
     font-size: ${props => props.theme.fontSizes.small};
-    cursor: ${props => (props.isGlobalOrdering || props.isOrdering || props.isOrdered) ? 'auto' : 'pointer'};
-    ${props => !(props.isGlobalOrdering || props.isOrdering || props.isOrdered) && css`
+    cursor: ${props => (props.$isGlobalOrdering || props.$isOrdering || props.$isOrdered) ? 'auto' : 'pointer'};
+    ${props => !(props.$isGlobalOrdering || props.$isOrdering || props.$isOrdered) && css`
         &:hover {
           background-color: ${props.theme.colors.primary.regular};
         }
