@@ -37,9 +37,9 @@
 ```
 docker cp ./back/database_test_task_dump.sql test_task-test-prod-mysql-1:/home/database_test_task_dump.sql
 docker-compose -f docker-compose.dev.yml exec test-prod-mysql bash
-mysql -h localhost -P 3306 -u root -p test_task_test_prod < ./home/database_test_task_dump.sql
+mysql -h localhost -P 3306 -u admin -p test_task_test_prod < ./home/database_test_task_dump.sql
 ```
-После ввести пароль от пользователя **root**.
+После ввести пароль от пользователя **admin**.
 
 - Таблица **products** используется для выполнения задания части **front**.
 - Таблицы **customers**, **orders**, **items**, а также все связанные с ними _индексы_, _представления_, _процедуры_, _триггеры_ и _события_ являются фиктивными (для проверки работы модуля синхронизации баз данных).

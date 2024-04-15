@@ -31,17 +31,17 @@ const PopupContainer = styled.div<Pick<PopupProps, 'type'> & { $isVisible: boole
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 300px;
-    max-width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     text-align: center;
+    transform: translate(-50%, -50%);
+    min-width: 250px;
+    max-width: 90%;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     animation: ${({ $isVisible }) => $isVisible ? fadeIn : fadeOut} 0.3s ease-out forwards;
     background-color: ${props => props.type === 'error' ? props.theme.colors.danger : props.theme.colors.success};
     color: ${props => props.theme.colors.light};
@@ -55,7 +55,8 @@ const CloseButton = styled.button`
     font-size: ${props => props.theme.fontSizes.large};
     cursor: pointer;
     line-height: 1;
-    padding-left: 25px;
+    padding-left: 15px;
+    justify-self: flex-end;
 
     &:hover {
         opacity: 0.8;
